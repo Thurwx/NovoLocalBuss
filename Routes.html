@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa com Leaflet.js e Rota</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="./css/Routes.css"> 
+    <link rel="stylesheet" href="css/Dark.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="../js/java.js"></script>
+</head>
+<body>
+    <div id="top-background">
+        <h1 id="title">LocalBuss</h1>
+    </div>
+     <div id="sidebar">
+        <img id="sidebar-logo"        src="./assents/L Azul.png" alt="Logo" >
+        <img id="sidebar-logo-escuro" src="assents/LT.png"       alt="Logo do Sidebar - Escuro">
+        <h2>Selecione a rota:</h2>
+        <select id="route-select">
+            <ul><option value="Selecione">Selecione:</option></ul>
+            <ul><option value="route1">Cohab / Santa Maria</option></ul>
+            <ul><option value="route2">São Pedro</option></ul>
+            <ul><option value="route3">Emilio Gardenal</option></ul>
+            <ul><option value="route4">Povo Feliz</option></ul>
+            <ul><option value="route5">São Roque / Bonanza</option></ul>
+        </select>
+        <h3>Orientadores:
+            <br>Daniel Guerreiro
+            <br>Eliton Camargo
+            <br>Anderson Ascenção
+        </h3>
+    </div>
+    <!-- Botão para abrir/fechar o sidebar com um ícone de menu -->
+<button 
+     id="toggle-sidebar"
+    class="btn btn-primary">
+    <i class="fas fa-bars"></i> <!-- Ícone de menu --> 
+</button>
+
+<label class="toggle-container">
+    <input class="toggle-checkbox" type="checkbox">
+    <div class="toggle-slot">
+      <div class="sun-icon-wrapper">
+        <div class="iconify sun-icon" data-icon="feather-sun" data-inline="false"></div>
+      </div>
+      <div class="toggle-button">
+      </div>
+      <div class="moon-icon-wrapper">
+        <div class="iconify moon-icon" data-icon="feather-moon" data-inline="false"></div>
+      </div>
+    </div>
+  </label>
+  
+<!-- Conteúdo do mapa -->
+    <div id="map"></div>
+    <button id="move-button" onclick="VenhaRota()">Mover sua Rota</button>
+    <script src="js/jquery.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+    <script>
+
+
+       var mymap = L.map('map').setView([-23.11111,-47.71816], 13); // Coordenadas aproximadas de Tietê, São Paulo, Brasil
+       var selectedRoute = null; // Variável para armazenar a rota selecionada
+       var route1 = null; // Variável para armazenar a rota 1
+       var route2 = null; // Variável para armazenar a rota 2
+       var route3 = null; // Variável para armazenar a rota 3
+       var route4 = null; // varuavel para armazenar a rota 4
+       var route5 = null; // variavel para armazenar a rota 5
+       var routeControl = null;
+      
+       var startPoint = L.latLng(-23.11108, -47.71820); // Coordenada de partida
+       var endPoint = L.latLng(-23.10186, -47.71200); // Coordenada da parada
+       var startMarker = L.marker(startPoint).addTo(mymap).bindPopup('Partida');
+       var endMarker = L.marker(endPoint).addTo(mymap).bindPopup('Parada');
+       var logoControl = L.control({ position: 'bottomright' });
+       var redIcon = new L.Icon({
+            iconUrl: './assents/bussMarker.png',
+            iconSize: [40, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+        var marker = L.marker([-23.11109, -47.71820], { clickable: false, draggable: false, icon: redIcon }).addTo(mymap);
+       
+        logoControl.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'leaflet-control');
+        var logoImg = document.createElement('img');
+        var theme = document.body.classList.contains('dark-theme') ;
+        logoImg.src = './assents/L Azul.png'; // Escolhe a imagem com base no tema
+        logoImg.alt = 'Logo';
+        logoImg.style.width = '80px'; // Defina a largura desejada em pixels
+        logoImg.style.height = '80px'; // Defina a altura desejada em pixels
+
+        div.appendChild(logoImg);
+
+    return div;
+};
+
+    logoControl.addTo(mymap);
+
+    function removeCurrentRoute() {
+        if (selectedRoute !== null) {
+            mymap.removeControl(selectedRoute);
+        }
+    }
+    // Adicionando camada de transporte público do Thunderforest com API key
+    L.tileLayer('https://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey={apikey}', {
+        attribution: '&copy; <a href="https://www.thunderforest.com/maps/transport/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+        apikey: '22f111fff9184ca791ce78c304a8bb00' // Substitua 'SuaAPIKeyAqui' pela sua chave de API
+    }).addTo(mymap);
+
+    function createMarker(lat, lng, name) {
+        L.marker([lat, lng]).addTo(mymap).bindPopup(name);
+    }
+
+    function createMap() {
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(mymap);
+
+    routeControl = L.Routing.control({
+        waypoints: [
+            L.latLng(startPoint),
+            L.latLng(endPoint)
+        ],
+        routeWhileDragging: false,
+        draggableWaypoints: false,
+        addWaypoints: false,
+        routeLine: function (route, options) {
+            return L.Routing.line(route, {
+                styles: [{ color: 'blue', weight: 3 }]
+            });
+        },
+        routeDrag: false,
+        geocoder: false,
+        router: new L.Routing.osrmv1({
+            serviceUrl: 'https://router.project-osrm.org'
+        })
+    }).addTo(mymap);
+}
+    function VenhaRota() {
+                var RotaCohabSM = [
+                [-23.11109, -47.71820], // terminal novo
+                [-23.11116, -47.71806], 
+                [-23.11123, -47.71791],
+                [-23.11116, -47.71780],
+                [-23.11103, -47.71773],
+                [-23.11097, -47.71777],
+                [-23.11092, -47.71788],
+                [-23.11089, -47.71791],
+                [-23.11085, -47.71788],
+                [-23.11074, -47.71781],
+                [-23.11060, -47.71772],
+                [-23.11054, -47.71767],
+                [-23.11041, -47.71759],
+                [-23.11030, -47.71752],
+                [-23.11025, -47.71745],
+                [-23.11051, -47.71699],
+                [-23.11096, -47.71607],
+                [-23.11128, -47.71537],
+                [-23.11148, -47.71500],
+                [-23.11178, -47.71489],
+                [-23.11222, -47.71501],
+                [-23.11266, -47.71486],
+                [-23.11310, -47.71450],
+                [-23.11361, -47.71399],
+                [-23.11377, -47.71369],
+                [-23.11402, -47.71335],
+                [-23.11439, -47.71306],
+                [-23.11481, -47.71294],
+                [-23.11521, -47.71296],
+                [-23.11553, -47.71294],
+                [-23.11615, -47.71294],
+                [-23.11662, -47.71289],
+                [-23.11700, -47.71263],
+                [-23.11737, -47.71230],
+                [-23.11771, -47.71199],
+                [-23.11803, -47.71158],
+                [-23.11846, -47.71131],
+                [-23.11881, -47.71141], // aqui é a rotatoria -> daqui para frente cada rota tem coordenadas diferentes 
+                [-23.11895, -47.71155],
+                [-23.11918, -47.71198],
+                [-23.11935, -47.71186],
+                [-23.11928, -47.71165],
+                [-23.11904, -47.71097],
+                [-23.11895, -47.71003],
+                [-23.11892, -47.70920],   
+                [-23.11898, -47.70867],
+                [-23.11908, -47.70771],
+                [-23.11924, -47.70653],
+                [-23.11935, -47.70544],
+                [-23.11946, -47.70399],
+                [-23.11968, -47.70267],              
+                [-23.12011, -47.70159],
+                [-23.12071, -47.70087],
+                [-23.12145, -47.70031],
+                [-23.12246, -47.69988],
+                [-23.12364, -47.69933],
+                [-23.12443, -47.69889],
+                [-23.12521, -47.69848],
+                [-23.12571, -47.69814],
+                [-23.12619, -47.69786],
+                [-23.12663, -47.69764],
+                [-23.12702, -47.69739],
+                [-23.12732, -47.69720],
+                [-23.12748, -47.69721],
+                [-23.12763, -47.69743],
+                [-23.12786, -47.69788],
+                [-23.12804, -47.69814],
+                [-23.12779, -47.69829],
+                [-23.12740, -47.69862],
+                [-23.12716, -47.69878],
+                [-23.12691, -47.69894],
+                [-23.12689, -47.69913],
+                [-23.12694, -47.69926],
+                [-23.12714, -47.69959],
+                [-23.12733, -47.69992],
+                [-23.12754, -47.70019],
+                [-23.12780, -47.70065],
+                [-23.12808, -47.70111],
+                [-23.12832, -47.70152],
+                [-23.12853, -47.70183],
+                [-23.12880, -47.70221],
+                [-23.12907, -47.70270],
+                [-23.12927, -47.70298],
+                [-23.12933, -47.70309],
+                [-23.12906, -47.70331],
+                [-23.12874, -47.70351], // ponto 
+                [-23.12851, -47.70373],
+                [-23.12850, -47.70392],
+                [-23.12857, -47.70437],
+                [-23.12855, -47.70513],
+                [-23.12853, -47.70578],
+                [-23.12849, -47.70642],
+                [-23.12847, -47.70709],
+                [-23.12849, -47.70759],
+                [-23.12857, -47.70803],
+                [-23.12859, -47.70822],
+                [-23.12837, -47.70831],
+                [-23.12768, -47.70851],
+                [-23.12711, -47.70867],
+                [-23.12681, -47.70904],
+                [-23.12653, -47.70981],
+                [-23.12625, -47.71052],
+                [-23.12596, -47.71113],
+                [-23.12563, -47.71145],
+                [-23.12543, -47.71144], //ponto
+                [-23.12460, -47.71151],
+                [-23.12376, -47.71163],
+                [-23.12212, -47.71184],
+                [-23.12123, -47.71196],
+                [-23.12065, -47.71208],//ponto
+                [-23.12023, -47.71217],
+                [-23.11994, -47.71200],//ponto
+                [-23.11953, -47.71178],
+                [-23.11905, -47.71154],
+                [-23.11875, -47.71139],
+                [-23.11833, -47.71116],
+                [-23.11810, -47.71106],
+                [-23.11783, -47.71107],
+                [-23.11726, -47.71103],
+                [-23.11706, -47.71104],
+                [-23.11687, -47.71103],//ponto
+                [-23.11538, -47.71106],
+                [-23.11468, -47.71105],//ponto
+                [-23.11404, -47.71103],
+                [-23.11355, -47.71102],//ponto
+                [-23.11297, -47.71090],
+                [-23.11248, -47.71076],//ponto
+                [-23.1116, -47.7104],
+                [-23.1104, -47.7100],//ponto
+                [-23.1097, -47.7098],
+                [-23.10919, -47.70964],//ponto
+                [-23.10811, -47.70983],
+                [-23.10729, -47.70993],
+                [-23.10653, -47.71017],
+                [-23.10608, -47.71029],
+                [-23.10562, -47.71047],// ponto cemiterio 
+                [-23.10508, -47.71081],
+                [-23.10460, -47.71113],
+                [-23.10393, -47.71161],
+                [-23.10322, -47.71223],
+                [-23.10266, -47.71263],
+                [-23.10233, -47.71287],
+                [-23.10216, -47.71295],
+                [-23.10207, -47.71280],
+                [-23.10207, -47.71253],
+                [-23.10200, -47.71242],
+                [-23.10189, -47.71241],
+                [-23.10186, -47.71216],
+                [-23.10185, -47.71185],// ponto baixo rodoviaria
+                [-23.10184, -47.71172],
+                [-23.10196, -47.71166],
+                [-23.10206, -47.71167],
+                [-23.10209, -47.71184],
+                [-23.10221, -47.71183],
+                [-23.10242, -47.71163],
+                [-23.10252, -47.71155],
+                [-23.10245, -47.71146],
+                [-23.10229, -47.71120],
+                [-23.10214, -47.71098],
+                [-23.10198, -47.71078],
+                [-23.10176, -47.71055],
+                [-23.10158, -47.71038],
+                [-23.10141, -47.71011],
+                [-23.10127, -47.71005],
+                [-23.10114, -47.71005],
+                [-23.10088, -47.71007],
+                [-23.10067, -47.71005],
+                [-23.10054, -47.71001],
+                [-23.10039, -47.70988],
+                [-23.10028, -47.70971],
+                [-23.09991, -47.70915],
+                [-23.09926, -47.70844],
+                [-23.09828, -47.70807],
+                [-23.09760, -47.70741],
+                [-23.09694, -47.70651],
+                [-23.09598, -47.70529],
+                [-23.09528, -47.70430],
+                [-23.09453, -47.70350],
+                [-23.09421, -47.70275],
+                [-23.09414, -47.70154],
+                [-23.09378, -47.70045],
+                [-23.09323, -47.69980],
+                [-23.09270, -47.69946],
+                [-23.09244, -47.69917], //ponto
+                [-23.09188, -47.69879],
+                [-23.09158, -47.69845],//ponto
+                [-23.09109, -47.69810],
+                [-23.09132, -47.69777],//ponto
+                [-23.09176, -47.69709],
+                [-23.09240, -47.69631],
+                [-23.09289, -47.69582],
+                [-23.09311, -47.69570],//ponto
+                [-23.09293, -47.69536],
+                [-23.09271, -47.69511],
+                [-23.09211, -47.69442],
+                [-23.09182, -47.69412],
+                [-23.09160, -47.69423],//ponto
+                [-23.09068, -47.69483],
+                [-23.09012, -47.69522],//ponto
+                [-23.08970, -47.69593],
+                [-23.08944, -47.69635],
+                [-23.08921, -47.69620],//ponto
+                [-23.08865, -47.69587],
+                [-23.08848, -47.69608],//ponto
+                [-23.08766, -47.69696],
+                [-23.08739, -47.69698],
+                [-23.08672, -47.69662],
+                [-23.08646, -47.69645],//ponto
+                [-23.08613, -47.69634],
+                [-23.08588, -47.69696],
+                [-23.08591, -47.69724],
+                [-23.08611, -47.69731],//ponto
+                [-23.08681, -47.69752],
+                [-23.08703, -47.69764],//ponto
+                [-23.08752, -47.69780],
+                [-23.08799, -47.69796],//ponto
+                [-23.08855, -47.69816],
+                [-23.08878, -47.69842],//ponto
+                [-23.08912, -47.69936],
+                [-23.08942, -47.69979],//ponto
+                [-23.09004, -47.70035],
+                [-23.09066, -47.70049],//ponto
+                [-23.09140, -47.70085],
+                [-23.09200, -47.70137],//ponto
+                [-23.09311, -47.70227],
+                [-23.09383, -47.70279],//ponto
+                [-23.09421, -47.70310],
+                [-23.09485, -47.70389],
+                [-23.09588, -47.70516],
+                [-23.0970, -47.7065],
+                [-23.0981, -47.7080],
+                [-23.0994, -47.7085],
+                [-23.0999, -47.7093],//ponto tec 
+                [-23.1006, -47.7100],
+                [-23.10079, -47.71046],
+                [-23.10119, -47.71055],
+                [-23.10141, -47.71079],
+                [-23.10171, -47.71073],
+                [-23.10180, -47.71089],
+                [-23.10183, -47.71134],
+                [-23.10186, -47.71164],
+                [-23.10203, -47.71167],
+                [-23.10209, -47.71183],
+                [-23.10209, -47.71226],//terminal cima 
+                [-23.10197, -47.71241],
+                [-23.10189, -47.71275],
+                [-23.10193, -47.71303],
+                [-23.10203, -47.71326],
+                [-23.10228, -47.71322],
+                [-23.10264, -47.71279],
+                [-23.10305, -47.71236],
+                [-23.10393, -47.71162],
+                [-23.10454, -47.71123],
+                [-23.10487, -47.71103], //ponto cemiterio lado restaurante
+                [-23.10535, -47.71072],
+                [-23.10539, -47.71151],
+                [-23.10544, -47.71260],
+                [-23.10547, -47.71389],//ponto
+                [-23.10548, -47.71506],
+                [-23.10553, -47.71596],
+                [-23.10558, -47.71710],
+                [-23.10558, -47.71776],
+                [-23.10588, -47.71779],//ponto
+                [-23.10695, -47.71786],
+                [-23.10787, -47.71798],
+                [-23.10886, -47.71815],
+                [-23.10974, -47.71826],
+                [-23.11003, -47.71794],
+                [-23.11016, -47.71762],
+                [-23.11027, -47.71760],
+                [-23.11056, -47.71777],
+                [-23.11077, -47.71794],
+                [-23.11086, -47.71799],
+                [-23.11077, -47.71820],
+                [-23.11082, -47.71836],
+                [-23.11096, -47.71841],
+                [-23.11108, -47.71825],
+                [-23.11112, -47.71813],//fim terminal 
+
+                ]; // Coordenadas ao longo do caminho
+
+                    var index = 0;
+                    var moveMarkerInterval = setInterval(function() {
+                        if (index < RotaCohabSM.length) {
+                            marker.setLatLng(RotaCohabSM[index]).update();
+                            mymap.panTo(RotaCohabSM[index]);
+                            index++;
+                        } else {
+                            clearInterval(moveMarkerInterval);
+                        }
+                    }, 1000); // Ajuste o intervalo de tempo conforme necessário
+                }
+        // Função para criar a rota 1
+        function createRoute1() {
+            removeCurrentRoute();
+            selectedRoute = L.Routing.control({
+                waypoints: [
+                L.latLng(-23.10794, -47.71799),
+                L.latLng(-23.11108, -47.71820), // terminal
+                L.latLng(-23.11313, -47.71444),
+                L.latLng(-23.12782, -47.69829), // entrada santa maria
+                L.latLng(-23.12927, -47.70290),
+                L.latLng(-23.12854, -47.70819), // saida santa maria 
+                L.latLng(-23.12541, -47.71142),
+                L.latLng(-23.11692, -47.71099),
+                L.latLng(-23.10564, -47.71044), // cemiterio 
+                L.latLng(-23.10188, -47.71209), // Parte Baixo Rodo
+                L.latLng(-23.10186, -47.71177), // (trajeto para a Cohab)
+            //
+                L.latLng(-23.10232, -47.71173),
+                L.latLng(-23.09728, -47.70692),
+                L.latLng(-23.09155, -47.69836),
+                L.latLng(-23.09290, -47.69585),
+                L.latLng(-23.09203, -47.69432),
+                L.latLng(-23.08891, -47.69598),
+                L.latLng(-23.08631, -47.69635),
+                L.latLng(-23.08989, -47.70021),
+                L.latLng(-23.10145, -47.71076),
+                L.latLng(-23.10211, -47.71224), // chegada Rodo Cohab 
+                L.latLng(-23.10537, -47.71137),
+                L.latLng(-23.10558, -47.71759),
+                ],
+                routeWhileDragging: false,
+                show: false,
+                draggableWaypoints: false, // Impede que os pontos de parada sejam arrastados
+                addWaypoints: false, // Impede que novos pontos de parada sejam adicionados
+                routeLine: function(route, options) {
+                    return L.Routing.line(route, {
+                        styles: [{ color: 'blue', weight: 3 }]
+                    });
+                },
+                routeDrag: false, // Desabilita a exibição detalhada de coordenadas (nomes das ruas) para a rota
+                geocoder: false // Desabilita a exibição detalhada de coordenadas (nomes das ruas) para os marcadores
+            }).addTo(mymap);
+            startMarker.addTo(mymap).bindPopup('Partida');
+            endMarker.addTo(mymap).bindPopup('Parada');
+        }
+
+        // Função para criar a rota 2
+        function createRoute2() {
+            removeCurrentRoute();
+            selectedRoute = L.Routing.control({
+                waypoints: [
+                    L.latLng(-23.10794, -47.71799),
+                    L.latLng(-23.11108, -47.71820), // Terminal Rodoviário Professor Oswaldo Rodrigues de Moraes
+                    L.latLng(-23.11313, -47.71444), // Rua Marcos Marcuz
+                    L.latLng(-23.11303,-47.71455), // Avenida Guiomar Fleury de Camargo
+                    L.latLng(-23.11798,-47.71103), // Rotatória
+                    L.latLng(-23.10570,-47.71044),  // Rua Francisco de Toledo
+                    L.latLng(-23.10221,-47.71293), //rotatoria centro
+                    L.latLng(-23.10207,-47.71250), // frente pauludeto
+                    L.latLng(-23.10186, -47.71200),// lado baixo rodoviaria
+                    L.latLng(-23.10185,-47.71269),
+                    L.latLng(-23.09988, -47.71311),
+                    L.latLng(-23.09962, -47.71583),
+                    L.latLng(-23.09556, -47.71744),
+                    L.latLng(-23.08176, -47.72347),
+                    L.latLng(-23.08197, -47.72586),
+                    L.latLng(-23.08205, -47.72876),
+                    L.latLng(-23.08220, -47.72710),
+                    L.latLng(-23.07915, -47.72726),
+                    L.latLng(-23.07556, -47.72697),
+                    L.latLng(-23.07628, -47.72882),
+                    L.latLng(-23.07995, -47.72679),
+                    L.latLng(-23.07931, -47.72423),
+                    L.latLng(-23.09753, -47.71742),
+                    L.latLng(-23.09940, -47.71559),
+                    L.latLng(-23.10094, -47.71252),
+                    L.latLng(-23.10214, -47.71200),
+                    L.latLng(-23.10538, -47.71127),
+                    L.latLng(-23.10561, -47.71740),
+                ],
+                routeWhileDragging: false,
+                show: false, // Inicialmente, não exibe a rota 2
+                draggableWaypoints: false, // Impede que os pontos de parada sejam arrastados
+                addWaypoints: false, // Impede que novos pontos de parada sejam adicionados
+                routeLine: function(route, options) {
+                    return L.Routing.line(route, {
+                        styles: [{ color: '#28E032', weight: 3 }]
+                    });
+                },
+                routeDrag: false, // Desabilita a exibição detalhada de coordenadas (nomes das ruas) para a rota
+                geocoder: false // Desabilita a exibição detalhada de coordenadas (nomes das ruas) para os marcadores
+            }).addTo(mymap);
+            startMarker.addTo(mymap).bindPopup('Partida');
+            endMarker.addTo(mymap).bindPopup('Parada');
+        }
+
+        // Função para criar a rota 3
+        function createRoute3() {
+            removeCurrentRoute();
+        selectedRoute = L.Routing.control({
+        waypoints: 
+        [
+         L.latLng(-23.10794, -47.71799),
+         L.latLng(-23.11108, -47.71820,'Partida Rodoviaria'), // Terminal Rodoviário Professor Oswaldo Rodrigues de Moraes
+         L.latLng(-23.11313, -47.71444), // Rua Marcos Marcuz
+         L.latLng(-23.11303,-47.71455), // Avenida Guiomar Fleury de Camargo
+         L.latLng(-23.11798,-47.71103), // Rotatória
+         L.latLng(-23.10794, -47.70876),
+         L.latLng(-23.10817, -47.70532),
+         L.latLng(-23.10990, -47.70207),
+         L.latLng(-23.11144, -47.70374),
+         L.latLng(-23.11351, -47.70183),
+         L.latLng(-23.11746, -47.70012),
+         L.latLng(-23.11840, -47.70163),
+         L.latLng(-23.11609, -47.70366),
+         L.latLng(-23.11217, -47.70588),
+         L.latLng(-23.10927, -47.70964),
+         L.latLng(-23.10568, -47.71049),
+
+         L.latLng(-23.10187, -47.71194),
+         L.latLng(-23.10210, -47.71213),
+         L.latLng(-23.09987, -47.71311),           
+         L.latLng(-23.09885, -47.71433),  
+         L.latLng(-23.09225, -47.70532),      
+         L.latLng(-23.08741, -47.70286),
+         L.latLng(-23.08669, -47.70334),  
+         L.latLng(-23.08406, -47.70587),
+         L.latLng(-23.08571, -47.70656),
+         L.latLng(-23.08706, -47.70591),
+         L.latLng(-23.09425, -47.70390),
+         L.latLng(-23.09429, -47.70242),
+         L.latLng(-23.09824, -47.70234),
+         L.latLng(-23.09979, -47.69915),
+         L.latLng(-23.10246, -47.69919),
+         L.latLng(-23.10228, -47.70061),
+         L.latLng(-23.10095, -47.70025),
+         L.latLng(-23.10016, -47.70119),
+         L.latLng(-23.10231, -47.70212),
+         L.latLng(-23.10371, -47.70944),
+         L.latLng(-23.10188, -47.71223),
+         L.latLng(-23.10210, -47.71213),
+         L.latLng(-23.10541, -47.71135),
+         L.latLng(-23.10561, -47.71739),
+        ],
+
+                routeWhileDragging: false,
+                show: false, // Inicialmente, não exibe a rota 3
+                draggableWaypoints: false, // Impede que os pontos de parada sejam arrastados
+                addWaypoints: false, // Impede que novos pontos de parada sejam adicionados
+            routeLine: function(route, options) {
+                return L.Routing.line(route, {
+                    styles: [{ color: '#DE461D', weight: 3 }]
+                });
+            },
+                routeDrag: false, // Desabilita a exibição detalhada de coordenadas (nomes das ruas) para a rota
+                geocoder: false // Desabilita a exibição detalhada de coordenadas (nomes das ruas) para os marcadores
+             }).addTo(mymap);
+             startMarker.addTo(mymap).bindPopup('Partida');
+            endMarker.addTo(mymap).bindPopup('Parada');
+        }
+
+        function createRoute4() {
+            removeCurrentRoute();
+            selectedRoute = L.Routing.control({
+                waypoints: [
+                L.latLng(-23.10794, -47.71799),
+                    L.latLng(-23.11108, -47.71820), // Adicionei o marcador com o rótulo 'Ponto de Partida'
+                    L.latLng(-23.11313, -47.71444), // Rua Marcos Marcuz
+                    L.latLng(-23.11303,-47.71455), // Avenida Guiomar Fleury de Camargo
+                    L.latLng(-23.11798,-47.71103), // Rotatória
+                    L.latLng(-23.10570,-47.71044),  // Rua Francisco de Toledo
+                    L.latLng(-23.10221,-47.71293), //rotatoria centro
+                    L.latLng(-23.10207,-47.71250), // frente pauludeto
+                    L.latLng(-23.10186, -47.71200),// lado baixo rodoviaria
+                    L.latLng(-23.10185,-47.71269), 
+                    L.latLng(-23.09988, -47.71311),
+                    L.latLng(-23.09962, -47.71583),
+                    L.latLng(-23.09556, -47.71744),
+                    L.latLng(-23.09686, -47.72155),
+                    L.latLng(-23.09630, -47.72397),
+                    L.latLng(-23.09894, -47.72607),
+                    L.latLng(-23.09977, -47.72473),
+                    L.latLng(-23.10200, -47.72495),
+                    L.latLng(-23.10548, -47.72494),
+                    L.latLng(-23.11134, -47.72411),
+                    L.latLng(-23.11229, -47.72498),
+                    L.latLng(-23.11190, -47.72640),
+                    L.latLng(-23.11058, -47.72649),
+                    L.latLng(-23.10913, -47.72679),
+                    L.latLng(-23.10517, -47.72656),
+                    L.latLng(-23.10078, -47.72617),
+                    L.latLng(-23.09788, -47.72578),
+                    L.latLng(-23.09640, -47.72415),
+                    L.latLng(-23.09755, -47.71745),
+                    L.latLng(-23.09950, -47.71555),
+                    L.latLng(-23.10097, -47.71261),
+                    L.latLng(-23.10206, -47.71192),
+                    L.latLng(-23.10542, -47.71213),
+                    L.latLng(-23.10558, -47.71688),
+                    L.latLng(-23.10558, -47.71759),
+                ],
+               
+                routeWhileDragging: false,
+                show: false,
+                draggableWaypoints: false, // Impede que os pontos de parada sejam arrastados
+                addWaypoints: false, // Impede que novos pontos de parada sejam adicionados
+                routeLine: function(route, options) {
+                    return L.Routing.line(route, {
+                        styles: [{ color: '#A921FF', weight: 3 }]
+                    });
+                },
+                routeDrag: false, // Desabilita a exibição detalhada de coordenadas (nomes das ruas) para a rota
+                geocoder: false // Desabilita a exibição detalhada de coordenadas (nomes das ruas) para os marcadores
+            }).addTo(mymap);
+            startMarker.addTo(mymap).bindPopup('Partida');
+            endMarker.addTo(mymap).bindPopup('Parada');
+        }
+
+        function createRoute5() {
+            removeCurrentRoute();
+            selectedRoute = L.Routing.control({
+                waypoints: [
+                    L.latLng(-23.10794, -47.71799),
+                    L.latLng(-23.11108, -47.71820), // Terminal Rodoviário Professor Oswaldo Rodrigues de Moraes
+                    L.latLng(-23.11313, -47.71444), // Rua Marcos Marcuz
+                    L.latLng(-23.13155, -47.72306),
+                    L.latLng(-23.13390, -47.72309),
+                    L.latLng(-23.13558, -47.72276),
+                    L.latLng(-23.1169, -47.7110),
+                    L.latLng(-23.11255, -47.71078),
+                    L.latLng(-23.10562, -47.71045),
+                    L.latLng(-23.10186, -47.71200),// lado baixo rodoviaria
+                    L.latLng(-23.10210, -47.71231),
+                    L.latLng(-23.09952, -47.71339),
+                    L.latLng(-23.09960, -47.71580),
+                    L.latLng(-23.09558, -47.71743),
+                    L.latLng(-23.08265, -47.72536),
+                    L.latLng(-23.07894, -47.72468),
+                    L.latLng(-23.08793, -47.71532),
+                    L.latLng(-23.08566, -47.71295),// avenida brasil
+                    L.latLng(-23.08635, -47.71187),
+                    L.latLng(-23.09164, -47.71731),
+                    L.latLng(-23.09947, -47.71558),
+                    L.latLng(-23.10153, -47.71225),
+                    L.latLng(-23.10211, -47.71196),
+                    L.latLng(-23.10540, -47.71133),
+                    L.latLng(-23.10556, -47.71737),
+                ],
+                routeWhileDragging: false,
+                show: false, // Inicialmente, não exibe a rota 5
+                draggableWaypoints: false, // Impede que os pontos de parada sejam arrastados
+                addWaypoints: false, // Impede que novos pontos de parada sejam adicionados
+                routeLine: function(route, options) {
+                    return L.Routing.line(route, {
+                styles: [{ color: '#F74AB4', weight: 5 }]
+            });
+                },
+                routeDrag: false, // Desabilita a exibição detalhada de coordenadas (nomes das ruas) para a rota
+                geocoder: false // Desabilita a exibição detalhada de coordenadas (nomes das ruas) para os marcadores
+            }).addTo(mymap);
+            startMarker.addTo(mymap).bindPopup('Partida');
+            endMarker.addTo(mymap).bindPopup('Parada');
+            // Função para fechar o sidebar
+            function closeSidebar() {
+                var sidebar = document.getElementById('sidebar');
+                sidebar.style.left = '-250px';
+            }
+
+        }
+        // Função para fechar o sidebar
+        function closeSidebar() {
+                var sidebar = document.getElementById('sidebar');
+                sidebar.style.left = '-250px';
+            }
+         document.getElementById('toggle-sidebar').addEventListener('click', function () {
+            var sidebar = document.getElementById('sidebar');
+            if (sidebar.style.left === '0px') {
+                sidebar.style.left = '-250px';
+            } else {
+                sidebar.style.left = '0px';
+            }
+        });
+        document.getElementById('map').addEventListener('click', function () {
+        var sidebar = document.getElementById('sidebar');
+        sidebar.style.left = '-250px';
+});
+
+        document.getElementById('route-select').addEventListener('change', function() {
+            var selectedValue = this.value;
+            if (selectedValue === 'route1') {
+                createRoute1();
+            } else if (selectedValue === 'route2') {
+                createRoute2();
+            } else if (selectedValue === 'route3') {
+                createRoute3();
+            } else if (selectedValue === 'route4') {
+                createRoute4();
+            } else if (selectedValue === 'route5') {
+                createRoute5();
+            }
+            closeSidebar(); // Fecha o sidebar após a seleção de uma rota
+        });
+    </script>
+</body>
+</html>
