@@ -6,24 +6,35 @@
     height: 0;
     width: 0;
   }
-  
   .toggle-slot {
     font-size: 8px;
-    position: fixed; /* Alterado para posição fixa */
-    top: 8%; /* Opcional: centraliza verticalmente */
-    transform: translateY(-50%); /* Opcional: centraliza verticalmente */
-    right: 10px; /* Define a distância do lado direito da tela */
+    position: fixed;
+    top: 8%;
+    right: 1%; /* Mudamos para porcentagem para torná-lo mais responsivo */
     height: 3.5em;
     width: 7em;
     border: 0px solid transparent;
     border-radius: 10em;
     background-color: white;
     transition: background-color 250ms;
-  }
+}
+
+/* Media query para dispositivos com largura máxima de 768px */
+@media only screen and (max-width: 768px) {
+    .toggle-slot {
+        font-size: 6px;
+        width: 50px; /* Reduzindo a largura para caber em dispositivos móveis */
+        height: 25px; /* Reduzindo a altura para caber em dispositivos móveis */
+        top: 9%; /* Posição superior menor para dispositivos móveis */
+        right: 2%; /* Distância menor do lado direito para dispositivos móveis */
+    }
+}
+
+
   
   
   .toggle-checkbox:checked ~ .toggle-slot {
-    background-color: #374151;
+    background-color: #2e2e2e;
   }
   
   .toggle-button {
@@ -42,6 +53,7 @@
     box-shadow: inset 0px 0px 0px 0.75em white;
     transform: translate(3.65em, 0.25em);
   }
+
   
   .sun-icon {
     position: absolute;
@@ -88,28 +100,38 @@
     transform: translate(2em, 2em) rotate(-15deg);
   }
   
-  .dark-theme #top-background , .dark-theme #title , .dark-theme #sidebar , .dark-theme #sidebar h3 , .dark-theme #sidebar h2 {
+  .dark-theme #top-background , .dark-theme #title , .dark-theme #sidebar , .dark-theme #sidebar h3 , .dark-theme #sidebar h2, .dark-theme #toggle-sidebar {
     background-color: #2e2e2e; /* Cor de fundo preta */
     color: #ffffff; /* Cor do texto branca */ 
     transition: opacity 250ms, transform 800ms cubic-bezier(.26,2.5,.46,.71);
   }
   .dark-theme #route-select {
     background-color:#2e2e2e;
-    border: 2px solid #2e2e2e; /* Adicione uma borda sólida com uma cor futurista (por exemplo, azul) */
+    border: 1px solid #2e2e2e;;
+    border: 1px solid #2e2e2e;;
     color: #ffffff; /* Define a cor do texto */
   }
-  .dark-theme #route-select:focus {
-    border-color:#2e2e2e; /* Cor da borda quando em foco */
-    box-shadow: 0 0 20px  #000000; /* Sombra quando em foco */
+  .dark-theme #route-select option {
+    padding: 8px;
+    background-color: #2e2e2e;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
   }
-  .dark-theme #sidebar {
-    box-shadow: 0 0 30px #000000;
-}
+
 .dark-theme #sidebar-logo-escuro {
     margin: 0 auto;
     width: 167px; 
     height: auto;
     margin-bottom: 5px;
+  }
+
+  .dark-theme .Btn{
+    background: #2785dc;
+    background: -moz-linear-gradient(45deg, #5f5f5f 0%, #424242 25%, #303030 50%, #2b2b2b 75%, #0f0f0f 100%);
+    background: -webkit-linear-gradient(45deg, #5f5f5f 0%,#424242 25%,#303030  50%,#2b2b2b  75%,#0f0f0f 100%);
+    background: linear-gradient(45deg, #5f5f5f 0%,#424242 25%,#303030 50%,#2b2b2b  75%,#0f0f0f 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f09433', endColorstr='#bc1888',GradientType=1 );
   }
   
   

@@ -1,6 +1,6 @@
 function initMap() {
   const map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 8,
+    zoom: 5,
     center: { lat: 40.731, lng: -73.997 },
   });
   const geocoder = new google.maps.Geocoder();
@@ -60,5 +60,6 @@ document.addEventListener("DOMContentLoaded", function () {
       sidebarLogoLight.style.display = "block"; // Exibe a logo do tema claro
       sidebarLogoDark.style.display = "none"; // Oculta a logo do tema escuro
     }
+    
   });
 });

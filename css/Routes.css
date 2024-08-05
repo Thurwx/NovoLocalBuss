@@ -16,33 +16,41 @@
 }
 /* Estilo futurista para o menu suspenso */
 #route-select {
-  background-color: #ffffff; /* Define o fundo como transparente */
-  border: 2px solid #ffffff; /* Adicione uma borda sólida com uma cor futurista (por exemplo, azul) */
-  color: #000000a6; /* Define a cor do texto */
-  padding: 15px; /* Adicione algum espaço interno para melhor aparência */
-  font-size: 18px; /* Tamanho da fonte */
-  border-radius: 5px; /* Borda arredondada */
-  appearance: none; /* Remove o estilo padrão do sistema */
-  margin-top: -40px;
-  font-family:sans-serif;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #fff;
+  border: 1px solid #fff;
+  color: #307eec;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 16px;
+  width: 100%;
+  cursor: pointer;
+  outline: none;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
 }
 
-/* Estilo para as opções no menu suspenso */
 #route-select option {
-  background-color: #ffffff; /* Cor de fundo das opções */
-  color: #000000a6;  /* Cor do texto das opções */
-  font-size: 18px;
-  margin-top: -40px; /* Tamanho da fonte das opções */
+  padding: 8px;
+  background-color: #fff;
+  color: #307eec;
+  font-size: 16px;
+  cursor: pointer;
 }
 
-/* Estilize a seta do menu suspenso (você pode usar uma imagem de ícone futurista) */
-#route-select::-ms-expand {
-  display: none; 
+#route-select option:hover {
+  background-color: #f2f2f2;
 }
 
-#route-select:focus {
-  border-color: #1100ff; /* Cor da borda quando em foco */
-  box-shadow: 0 0 5px #0011ff; /* Sombra quando em foco */
+#route-select option:focus {
+  background-color: #e5e5e5;
+}
+
+#route-select option:checked {
+  background-color: #307eec;
+  color: #fff;
 }
 
    /* Estilize o sidebar */
@@ -57,7 +65,6 @@
     transition: left 0.3s;
     overflow-y: auto;
     padding-top: 60px;
-    box-shadow: 0 0 30px #000000;
 }
 #sidebar-logo {
   display: block;
@@ -73,7 +80,7 @@
   margin-top: 20px; 
   margin-left: 6px;
   color: #307FED;
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 #sidebar ul {
@@ -98,10 +105,15 @@
 #toggle-sidebar {
     position: absolute;
     top: 3px;
-    left: 15px;
+    left: 25px;
     z-index: 1;
     text-align: center;
     margin-top: 10px; 
+    border: 0 !important;
+    background: none !important;
+    padding: 0;
+    font-size: 25px;
+    color: #307eec;
 }
 /* letreiro localBuss */
 #top-background {
@@ -110,7 +122,6 @@
   left: 0;
   width: 100%;
   background-color: #ffffff; /* Cor de fundo azul */
-  border-radius: 0 0 20px 20px; /* Borda mais arredondada */
   z-index: 0; /* Coloque o fundo atrás do menu */
   height: 40px; /* Altura do fundo azul */
   text-align: center; /* Centralizar o título horizontalmente */
@@ -118,7 +129,7 @@
 }
 
 #title {
-  font-family: "BankGothic Md BT", sans-serif; /* Fonte "BankGothic Md BT" */
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   color: #307eec; /* Cor do texto em branco */
   margin: 0; /* Remova as margens padrão do título */
   letter-spacing: 2px; 
@@ -149,10 +160,54 @@
  #sidebar-logo-escuro {
   display: none;
 }
+.Btn {
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  left: 10px;
+  top: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition-duration: .4s;
+  cursor: pointer;
+  position: relative;
+  background: #ffffff;
 
-#move-button {
-  position: absolute;
-  bottom: 10px; /* Distância do botão à parte inferior */
-  left: 10px; /* Distância do botão à parte esquerda */
-  z-index: 1000; /* Certifique-se de que o botão esteja sempre na frente do mapa */
+  overflow: hidden;
 }
+
+.svgIcon {
+  transition-duration: .3s;
+}
+
+.svgIcon path {
+  fill: rgb(48 127 237);
+}
+
+.text {
+  position: absolute;
+  color: rgb(48 127 237);
+  width: 120px;
+  font-weight: 600;
+  opacity: 0;
+  transition-duration: .4s;
+}
+
+.Btn:hover {
+  width: 110px;
+  transition-duration: .4s;
+  border-radius: 30px;
+}
+
+.Btn:hover .text {
+  opacity: 1;
+  transition-duration: .4s;
+}
+
+.Btn:hover .svgIcon {
+  opacity: 0;
+  transition-duration: .3s;
+}
+

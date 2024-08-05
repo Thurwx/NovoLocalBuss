@@ -1,49 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa com Leaflet.js e Rota</title>
+    <title>Mapa</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <link rel="stylesheet" href="./css/Routes.css"> 
     <link rel="stylesheet" href="css/Dark.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="../js/java.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="./js/java.js"></script>
 </head>
 <body>
     <div id="top-background">
-        <h1 id="title">LocalBuss</h1>
+        <h1 id="title">LocalBuss</h1>        
     </div>
-     <div id="sidebar">
-        <img id="sidebar-logo"        src="./assents/L Azul.png" alt="Logo" >
-        <img id="sidebar-logo-escuro" src="assents/LT.png"       alt="Logo do Sidebar - Escuro">
+    <div id="sidebar">
+        <img id="sidebar-logo" src="./assents/L Azul.png" alt="Logo">
+        <img id="sidebar-logo-escuro" src="assents/LT.png" alt="Logo do Sidebar - Escuro">
+        
         <h2>Selecione a rota:</h2>
         <select id="route-select">
-            <ul><option value="Selecione">Selecione:</option></ul>
-            <ul><option value="route1">Cohab / Santa Maria</option></ul>
-            <ul><option value="route2">São Pedro</option></ul>
-            <ul><option value="route3">Emilio Gardenal</option></ul>
-            <ul><option value="route4">Povo Feliz</option></ul>
-            <ul><option value="route5">São Roque / Bonanza</option></ul>
-        </select>
-        <h3>Orientadores:
-            <br>Daniel Guerreiro
-            <br>Eliton Camargo
-            <br>Anderson Ascenção
-        </h3>
-    </div>
-    <!-- Botão para abrir/fechar o sidebar com um ícone de menu -->
-<button 
-     id="toggle-sidebar"
-    class="btn btn-primary">
-    <i class="fas fa-bars"></i> <!-- Ícone de menu --> 
-</button>
+            <option value="Selecione" disabled selected>Selecione:</option>
+            <option value="route1">Cohab / Santa Maria</option>
+            <option value="route2">São Pedro</option>
+            <option value="route3">Emilio Gardenal</option>
+            <option value="route4">Povo Feliz</option>
+            <option value="route5">São Roque / Bonanza</option>
+          </select>
+          <a href="https://www.instagram.com/locallbuss/?igsh=N25yZjFhZzhyeWR0&utm_source=qr">
+              <button class="Btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 448 512" class="svgIcon"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"></path></svg>
+                  <span class="text">Instagram</span>
+                </button>
+            </a>
+            <h3>Orientadores:
+              <br>Daniel Guerreiro
+              <br>Eliton Camargo
+              <br>Anderson Ascenção
+            </h3>
+      </div>
 
-<label class="toggle-container">
+    <!-- Botão para abrir/fechar o sidebar com um ícone de menu -->
+    <button
+         id="toggle-sidebar" 
+         class="btn btn-primary">
+        <span class="fas fa-bars"></span> <!-- Ícone de menu -->
+      </button>
+
+
+  <label class="toggle-container">
     <input class="toggle-checkbox" type="checkbox">
     <div class="toggle-slot">
       <div class="sun-icon-wrapper">
@@ -57,39 +65,74 @@
     </div>
   </label>
   
-<!-- Conteúdo do mapa -->
+ <!-- Conteúdo do mapa -->
     <div id="map"></div>
-    <button id="move-button" onclick="VenhaRota()">Mover sua Rota</button>
     <script src="js/jquery.js"></script>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
     <script>
-
-
-       var mymap = L.map('map').setView([-23.11111,-47.71816], 13); // Coordenadas aproximadas de Tietê, São Paulo, Brasil
+       var mymap = L.map('map').setView([-23.11111,-47.71816], 13); 
        var selectedRoute = null; // Variável para armazenar a rota selecionada
        var route1 = null; // Variável para armazenar a rota 1
        var route2 = null; // Variável para armazenar a rota 2
        var route3 = null; // Variável para armazenar a rota 3
        var route4 = null; // varuavel para armazenar a rota 4
        var route5 = null; // variavel para armazenar a rota 5
-       var routeControl = null;
-      
        var startPoint = L.latLng(-23.11108, -47.71820); // Coordenada de partida
        var endPoint = L.latLng(-23.10186, -47.71200); // Coordenada da parada
        var startMarker = L.marker(startPoint).addTo(mymap).bindPopup('Partida');
        var endMarker = L.marker(endPoint).addTo(mymap).bindPopup('Parada');
        var logoControl = L.control({ position: 'bottomright' });
-       var redIcon = new L.Icon({
-            iconUrl: './assents/bussMarker.png',
+       //Variável para armazenar a última posição do marcador
+       var lastMarkerPosition = null;
+        var lastIndex = 0;
+       //
+       var AzulIcon = new L.Icon({
+            iconUrl: './assents/bussMarkerAzul.png',
             iconSize: [40, 41],
             iconAnchor: [12, 41],
             popupAnchor: [1, -34],
             shadowSize: [41, 41]
         });
-        var marker = L.marker([-23.11109, -47.71820], { clickable: false, draggable: false, icon: redIcon }).addTo(mymap);
-       
-        logoControl.onAdd = function (map) {
+       var markerAzul = L.marker([-23.11109, -47.71820], { clickable: false, draggable: false, icon: AzulIcon }).addTo(mymap);
+       //
+       var VerdeIcon = new L.Icon({
+            iconUrl: './assents/bussMarkerVerde.png',
+            iconSize: [40, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+       });
+       var markerVerde = L.marker([-23.10282, -47.71263], { clickable: false, draggable: false, icon: VerdeIcon }).addTo(mymap);
+       //
+       var RedIcon = new L.Icon({
+            iconUrl: './assents/bussMarkerRed.png',
+            iconSize: [40, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+       var markerRed = L.marker([-23.09393, -47.70573], { clickable: false, draggable: false, icon: RedIcon }).addTo(mymap);
+       // 
+       var RoxoIcon = new L.Icon({
+            iconUrl: './assents/bussMarkerRoxo.png',
+            iconSize: [40, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+       var markerRoxo = L.marker([-23.09698, -47.72107], { clickable: false, draggable: false, icon: RoxoIcon }).addTo(mymap);
+       ////
+       var LaranjaIcon = new L.Icon({
+            iconUrl: './assents/bussMarkerLaranja.png',
+            iconSize: [40, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+       var markerLaranja = L.marker([-23.12016, -47.71232], { clickable: false, draggable: false, icon: LaranjaIcon }).addTo(mymap);
+       ////
+       logoControl.onAdd = function (map) {
         var div = L.DomUtil.create('div', 'leaflet-control');
         var logoImg = document.createElement('img');
         var theme = document.body.classList.contains('dark-theme') ;
@@ -101,51 +144,124 @@
         div.appendChild(logoImg);
 
     return div;
-};
-
-    logoControl.addTo(mymap);
-
-    function removeCurrentRoute() {
-        if (selectedRoute !== null) {
-            mymap.removeControl(selectedRoute);
-        }
-    }
-    // Adicionando camada de transporte público do Thunderforest com API key
-    L.tileLayer('https://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey={apikey}', {
-        attribution: '&copy; <a href="https://www.thunderforest.com/maps/transport/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-        apikey: '22f111fff9184ca791ce78c304a8bb00' // Substitua 'SuaAPIKeyAqui' pela sua chave de API
+ };
+ 
+ 
+ // Adicionando camada de transporte público do Thunderforest com API key
+ L.tileLayer('https://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey={apikey}', {
+     attribution: '&copy; <a href="https://www.thunderforest.com/maps/transport/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+     apikey: '22f111fff9184ca791ce78c304a8bb00' // Substitua 'SuaAPIKeyAqui' pela sua chave de API
     }).addTo(mymap);
-
-    function createMarker(lat, lng, name) {
-        L.marker([lat, lng]).addTo(mymap).bindPopup(name);
-    }
-
+    
     function createMap() {
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(mymap);
+        
+        routeControl = L.Routing.control({
+            waypoints: [
+                L.latLng(startPoint),
+                L.latLng(endPoint)
+            ],
+            routeWhileDragging: false,
+            draggableWaypoints: false,
+            addWaypoints: false,
+            routeLine: function (route, options) {
+                return L.Routing.line(route, {
+                    styles: [{ color: 'blue', weight: 3 }]
+                });
+            },
+            routeDrag: false,
+            geocoder: false,
+            router: new L.Routing.osrmv1({
+                serviceUrl: 'https://router.project-osrm.org'
+            })
+        }).addTo(mymap);
+    }
+    logoControl.addTo(mymap);
+            function removeCurrentRoute() {
+            if (selectedRoute !== null) {
+                mymap.removeControl(selectedRoute);
+                selectedRoute = null; // Limpa a variável para a próxima rota
+            }
+        }
+        if (markerVerde) {
+            mymap.removeLayer(markerVerde);
+        }
+        if (markerRed) {
+            mymap.removeLayer(markerRed);
+        }
+        if (markerRoxo) {
+            mymap.removeLayer(markerRoxo)
+        }
+        if (markerLaranja) {
+            mymap.removeLayer(markerLaranja)
+        }
+        if (markerAzul) {
+            mymap.removeLayer(markerAzul)
+        };
+        // Função para criar a rota 1
+        function createRoute1() {
+            removeCurrentRoute();
+            selectedRoute = L.Routing.control({
+                waypoints: [
+                L.latLng(-23.10794, -47.71799),
+                L.latLng(-23.11108, -47.71820), // terminal
+                L.latLng(-23.11313, -47.71444),
+                L.latLng(-23.12782, -47.69829), // entrada santa maria
+                L.latLng(-23.12927, -47.70290),
+                L.latLng(-23.12854, -47.70819), // saida santa maria 
+                L.latLng(-23.12541, -47.71142),
+                L.latLng(-23.11692, -47.71099),
+                L.latLng(-23.10564, -47.71044), // cemiterio 
+                L.latLng(-23.10188, -47.71209), // Parte Baixo Rodo
+                L.latLng(-23.10186, -47.71177), // (trajeto para a Cohab)
+            //
+                L.latLng(-23.10232, -47.71173),
+                L.latLng(-23.09728, -47.70692),
+                L.latLng(-23.09155, -47.69836),
+                L.latLng(-23.09290, -47.69585),
+                L.latLng(-23.09203, -47.69432),
+                L.latLng(-23.08891, -47.69598),
+                L.latLng(-23.08631, -47.69635),
+                L.latLng(-23.08989, -47.70021),
+                L.latLng(-23.10145, -47.71076),
+                L.latLng(-23.10211, -47.71224), // chegada Rodo Cohab 
+                L.latLng(-23.10537, -47.71137),
+                L.latLng(-23.10558, -47.71759),
+                ],
+                routeWhileDragging: false,
+                show: false,
+                draggableWaypoints: false, // Impede que os pontos de parada sejam arrastados
+                addWaypoints: false, // Impede que novos pontos de parada sejam adicionados
+                routeLine: function(route, options) {
+                    return L.Routing.line(route, {
+                        styles: [{ color: 'blue', weight: 3 }]
+                    });
+                },
+                routeDrag: false, // Desabilita a exibição detalhada de coordenadas (nomes das ruas) para a rota
+                geocoder: false // Desabilita a exibição detalhada de coordenadas (nomes das ruas) para os marcadores
+            }).addTo(mymap);
+            // Limpa o ícone VerdeIcon
+            if (markerVerde) {
+                mymap.removeLayer(markerVerde);
+            }
+            if (markerRed) {
+                mymap.removeLayer(markerRed);
+            }
+            if (markerRoxo) {
+                mymap.removeLayer(markerRoxo)
+            }
+            if (markerLaranja) {
+                mymap.removeLayer(markerLaranja)
+            }
+            // Re-adiciona o ícone AzulIcon
+            if (!mymap.hasLayer(markerAzul)) {
+                markerAzul.addTo(mymap);
+            }
+        }
 
-    routeControl = L.Routing.control({
-        waypoints: [
-            L.latLng(startPoint),
-            L.latLng(endPoint)
-        ],
-        routeWhileDragging: false,
-        draggableWaypoints: false,
-        addWaypoints: false,
-        routeLine: function (route, options) {
-            return L.Routing.line(route, {
-                styles: [{ color: 'blue', weight: 3 }]
-            });
-        },
-        routeDrag: false,
-        geocoder: false,
-        router: new L.Routing.osrmv1({
-            serviceUrl: 'https://router.project-osrm.org'
-        })
-    }).addTo(mymap);
-}
-    function VenhaRota() {
+        function VenhaRotaCoSm() {
                 var RotaCohabSM = [
                 [-23.11109, -47.71820], // terminal novo
                 [-23.11116, -47.71806], 
@@ -425,65 +541,23 @@
                 [-23.11096, -47.71841],
                 [-23.11108, -47.71825],
                 [-23.11112, -47.71813],//fim terminal 
-
                 ]; // Coordenadas ao longo do caminho
-
-                    var index = 0;
-                    var moveMarkerInterval = setInterval(function() {
-                        if (index < RotaCohabSM.length) {
-                            marker.setLatLng(RotaCohabSM[index]).update();
-                            mymap.panTo(RotaCohabSM[index]);
-                            index++;
-                        } else {
-                            clearInterval(moveMarkerInterval);
-                        }
-                    }, 1000); // Ajuste o intervalo de tempo conforme necessário
+                if (lastMarkerPosition) {
+                    lastIndex = RotaCohabSM.indexOf(lastMarkerPosition);
+                    if (lastIndex === -1) {
+                        lastIndex = 0;
+                    }
                 }
-        // Função para criar a rota 1
-        function createRoute1() {
-            removeCurrentRoute();
-            selectedRoute = L.Routing.control({
-                waypoints: [
-                L.latLng(-23.10794, -47.71799),
-                L.latLng(-23.11108, -47.71820), // terminal
-                L.latLng(-23.11313, -47.71444),
-                L.latLng(-23.12782, -47.69829), // entrada santa maria
-                L.latLng(-23.12927, -47.70290),
-                L.latLng(-23.12854, -47.70819), // saida santa maria 
-                L.latLng(-23.12541, -47.71142),
-                L.latLng(-23.11692, -47.71099),
-                L.latLng(-23.10564, -47.71044), // cemiterio 
-                L.latLng(-23.10188, -47.71209), // Parte Baixo Rodo
-                L.latLng(-23.10186, -47.71177), // (trajeto para a Cohab)
-            //
-                L.latLng(-23.10232, -47.71173),
-                L.latLng(-23.09728, -47.70692),
-                L.latLng(-23.09155, -47.69836),
-                L.latLng(-23.09290, -47.69585),
-                L.latLng(-23.09203, -47.69432),
-                L.latLng(-23.08891, -47.69598),
-                L.latLng(-23.08631, -47.69635),
-                L.latLng(-23.08989, -47.70021),
-                L.latLng(-23.10145, -47.71076),
-                L.latLng(-23.10211, -47.71224), // chegada Rodo Cohab 
-                L.latLng(-23.10537, -47.71137),
-                L.latLng(-23.10558, -47.71759),
-                ],
-                routeWhileDragging: false,
-                show: false,
-                draggableWaypoints: false, // Impede que os pontos de parada sejam arrastados
-                addWaypoints: false, // Impede que novos pontos de parada sejam adicionados
-                routeLine: function(route, options) {
-                    return L.Routing.line(route, {
-                        styles: [{ color: 'blue', weight: 3 }]
-                    });
-                },
-                routeDrag: false, // Desabilita a exibição detalhada de coordenadas (nomes das ruas) para a rota
-                geocoder: false // Desabilita a exibição detalhada de coordenadas (nomes das ruas) para os marcadores
-            }).addTo(mymap);
-            startMarker.addTo(mymap).bindPopup('Partida');
-            endMarker.addTo(mymap).bindPopup('Parada');
-        }
+                var moveMarkerInterval = setInterval(function() {
+                    if (lastIndex < RotaCohabSM.length) {
+                        markerAzul.setLatLng(RotaCohabSM[lastIndex]).update();
+                        lastMarkerPosition = RotaCohabSM[lastIndex]; // Update lastMarkerPosition
+                        lastIndex++;
+                    } else {
+                        clearInterval(moveMarkerInterval);
+                    }
+                }, 2000); // Ajuste o intervalo de tempo conforme necessário
+            }
 
         // Função para criar a rota 2
         function createRoute2() {
@@ -531,18 +605,306 @@
                 routeDrag: false, // Desabilita a exibição detalhada de coordenadas (nomes das ruas) para a rota
                 geocoder: false // Desabilita a exibição detalhada de coordenadas (nomes das ruas) para os marcadores
             }).addTo(mymap);
-            startMarker.addTo(mymap).bindPopup('Partida');
-            endMarker.addTo(mymap).bindPopup('Parada');
+            //////////////
+            if (markerAzul) {
+                mymap.removeLayer(markerAzul);
+            }
+            if (markerRed) {
+                mymap.removeLayer(markerRed);
+            }
+            if (markerRoxo) {
+                mymap.removeLayer(markerRoxo)
+            }
+            if (markerLaranja) {
+                mymap.removeLayer(markerLaranja)
+            }
+            // Re-adiciona o ícone AzulIcon
+            if (!mymap.hasLayer(markerVerde)) {
+                markerVerde.addTo(mymap);
+            }
         }
+        function VenhaRotaSP() {
+                var RotaSaoPedro = [
+                [-23.10282, -47.71263],
+                [-23.10349, -47.71201],
+                [-23.10422, -47.71140],
+                [-23.10487, -47.71097],
+                [-23.10537, -47.71075],
+                [-23.1054, -47.7113],
+                [-23.1054, -47.7127],
+                [-23.1055, -47.7139],
+                [-23.10550, -47.71535],
+                [-23.10554, -47.71659],
+                [-23.10559, -47.71771],
+                [-23.10657, -47.71785],
+                [-23.10777, -47.71797],
+                [-23.10863, -47.71808],
+                [-23.10941, -47.71816], // inicio
+                [-23.10980, -47.71826],
+                [-23.10995, -47.71805],
+                [-23.11010, -47.71777],
+                [-23.11019, -47.71757],
+                [-23.11039, -47.71768],
+                [-23.11056, -47.71780],
+                [-23.11076, -47.71792],
+                [-23.11086, -47.71799],
+                [-23.11078, -47.71816],
+                [-23.11073, -47.71827],
+                [-23.11081, -47.71835],
+                [-23.11092, -47.71841],
+                [-23.11102, -47.71831],
+                [-23.11110, -47.71817],
+                [-23.11120, -47.71798], // terminal
+                [-23.11124, -47.71786],
+                [-23.11116, -47.71780],
+                [-23.11103, -47.71773],
+                [-23.11095, -47.71780],
+                [-23.11090, -47.71791],
+                [-23.11081, -47.71785],
+                [-23.11059, -47.71771],
+                [-23.11030, -47.71751],
+                [-23.11026, -47.71745],
+                [-23.11044, -47.71711],
+                [-23.11079, -47.71637],
+                [-23.11102, -47.71589],
+                [-23.11115, -47.71564],
+                [-23.11117, -47.71561],
+                [-23.11136, -47.71522],
+                [-23.11154, -47.71487],
+                [-23.11221, -47.71498],
+                [-23.11259, -47.71490],
+                [-23.11292, -47.71464],
+                [-23.11309, -47.71449],
+                [-23.11344, -47.71417],
+                [-23.11366, -47.71387],
+                [-23.11400, -47.71339],
+                [-23.11447, -47.71299],
+                [-23.11511, -47.71294],
+                [-23.11602, -47.71291],
+                [-23.11660, -47.71288],
+                [-23.11761, -47.71210],
+                [-23.11800, -47.71157],
+                [-23.11825, -47.71128],
+                [-23.11801, -47.71107],
+                [-23.11718, -47.71103],
+                [-23.11687, -47.71105],
+                [-23.11526, -47.71112],
+                [-23.11466, -47.71109],
+                [-23.11358, -47.71103],
+                [-23.11198, -47.71057],
+                [-23.11040, -47.70995],
+                [-23.10924, -47.70971],
+                [-23.10807, -47.70979],
+                [-23.10704, -47.71001],
+                [-23.10632, -47.71026],
+                [-23.10564, -47.71047],
+                [-23.10496, -47.71091],
+                [-23.10416, -47.71148],
+                [-23.10311, -47.71234],
+                [-23.10251, -47.71275],
+                [-23.10214, -47.71297],
+                [-23.10208, -47.71256],
+                [-23.10200, -47.71241],
+                [-23.10186, -47.71223], // parte de baixo terminal
+                [-23.10184, -47.71172],
+                [-23.10197, -47.71165],
+                [-23.10206, -47.71173],
+                [-23.10207, -47.71217], // parte de cima terminal
+                [-23.10200, -47.71242],
+                [-23.10188, -47.71264],
+                [-23.10186, -47.71299],
+                [-23.10125, -47.71304],
+                [-23.10070, -47.71307],
+                [-23.09986, -47.71310],
+                [-23.09952, -47.71320],
+                [-23.09954, -47.71420],
+                [-23.09958, -47.71523],
+                [-23.09959, -47.71576], // plinio 
+                [-23.09963, -47.71679],
+                [-23.09955, -47.71703],
+                [-23.09934, -47.71698],
+                [-23.09831, -47.71684],
+                [-23.09747, -47.71670],
+                [-23.09677, -47.71665],
+                [-23.09643, -47.71668],
+                [-23.09588, -47.71717],
+                [-23.09555, -47.71746],
+                [-23.09489, -47.71800],
+                [-23.09428, -47.71806],
+                [-23.09320, -47.71796],
+                [-23.09210, -47.71785],
+                [-23.09021, -47.71761],
+                [-23.08956, -47.71778],
+                [-23.08812, -47.71806],
+                [-23.08727, -47.71819],
+                [-23.08685, -47.71859],
+                [-23.08659, -47.71914],
+                [-23.08588, -47.71955],
+                [-23.08513, -47.71926],
+                [-23.08489, -47.71968],
+                [-23.08458, -47.72032],
+                [-23.08404, -47.72087],
+                [-23.08252, -47.72229],
+                [-23.08161, -47.72317],
+                [-23.08182, -47.72352],
+                [-23.08256, -47.72441],
+                [-23.08307, -47.72511],
+                [-23.08273, -47.72534],
+                [-23.08196, -47.72575],
+                [-23.08215, -47.72669],
+                [-23.08223, -47.72723],
+                [-23.08240, -47.72873],
+                [-23.08212, -47.72879],
+                [-23.08183, -47.72854],
+                [-23.08156, -47.72693],
+                [-23.08199, -47.72638],
+                [-23.08196, -47.72590],
+                [-23.08140, -47.72597],
+                [-23.08038, -47.72654],
+                [-23.07918, -47.72722],
+                [-23.07887, -47.72734],
+                [-23.07854, -47.72657],
+                [-23.07806, -47.72567],
+                [-23.07780, -47.72578],
+                [-23.07699, -47.72629],
+                [-23.07638, -47.72658],
+                [-23.07595, -47.72672],
+                [-23.07562, -47.72691],
+                [-23.07542, -47.72720],
+                [-23.07586, -47.72819],
+                [-23.07618, -47.72882],
+                [-23.07633, -47.72882],
+                [-23.07662, -47.72866],
+                [-23.07707, -47.72840],
+                [-23.07753, -47.72813],
+                [-23.07780, -47.72801],
+                [-23.07790, -47.72796],
+                [-23.07811, -47.72782],
+                [-23.07836, -47.72768],
+                [-23.07845, -47.72777],
+                [-23.07866, -47.72820],
+                [-23.07902, -47.72897],
+                [-23.07918, -47.72922],
+                [-23.07927, -47.72918],
+                [-23.07965, -47.72897],
+                [-23.08005, -47.72873],
+                [-23.08046, -47.72850],
+                [-23.08060, -47.72843],
+                [-23.08068, -47.72827],
+                [-23.08040, -47.72773],
+                [-23.08004, -47.72692],
+                [-23.07946, -47.72573],
+                [-23.07902, -47.72493],
+                [-23.07885, -47.72445],
+                [-23.07907, -47.72431],
+                [-23.08041, -47.72374],
+                [-23.08131, -47.72333],
+                [-23.08209, -47.72273],
+                [-23.08265, -47.72214],
+                [-23.08386, -47.72103],
+                [-23.08413, -47.72077],
+                [-23.08489, -47.72007],
+                [-23.08526, -47.71968],
+                [-23.08541, -47.71957],
+                [-23.08647, -47.71925],
+                [-23.08652, -47.71915],
+                [-23.08677, -47.71881],
+                [-23.08696, -47.71869],
+                [-23.08723, -47.71855],
+                [-23.08761, -47.71823],
+                [-23.08801, -47.71811],
+                [-23.08921, -47.71786],
+                [-23.09032, -47.71761],
+                [-23.09115, -47.71767],
+                [-23.09206, -47.71786],
+                [-23.09339, -47.71805],
+                [-23.09478, -47.71808],
+                [-23.09527, -47.71798],
+                [-23.09557, -47.71788],
+                [-23.09572, -47.71765],
+                [-23.09599, -47.71738],
+                [-23.09645, -47.71698],
+                [-23.09686, -47.71697],
+                [-23.09743, -47.71738],
+                [-23.09770, -47.71758],
+                [-23.09770, -47.71690],
+                [-23.09769, -47.71624],
+                [-23.09782, -47.71588],
+                [-23.09885, -47.71585],
+                [-23.09896, -47.71559],
+                [-23.09954, -47.71555],
+                [-23.10069, -47.71551],
+                [-23.10097, -47.71539],
+                [-23.10096, -47.71450],
+                [-23.10086, -47.71348],
+                [-23.10088, -47.71309],
+                [-23.10091, -47.71270],
+                [-23.10099, -47.71228],
+                [-23.10149, -47.71223],
+                [-23.10186, -47.71220],
+                [-23.10183, -47.71177],
+                [-23.10200, -47.71165],
+                [-23.10207, -47.71177],
+                [-23.10208, -47.71229],
+                [-23.10190, -47.71242],
+                [-23.10189, -47.71272],
+                [-23.10191, -47.71297],
+                [-23.10198, -47.71313],
+                [-23.10221, -47.71330],
+                [-23.10248, -47.71297],
+                [-23.10302, -47.71239],
+                [-23.10344, -47.71202],
+                [-23.10389, -47.71165],
+                [-23.10453, -47.71119],
+                [-23.10487, -47.71098],
+                [-23.10536, -47.71068],
+                [-23.10537, -47.71170],
+                [-23.10538, -47.71261],
+                [-23.10546, -47.71342],
+                [-23.10550, -47.71407],
+                [-23.10552, -47.71531],
+                [-23.10559, -47.71682],
+                [-23.10556, -47.71757],
+                [-23.10584, -47.71776],
+                [-23.10661, -47.71786],
+                [-23.10780, -47.71801],
+
+                ]; // Coordenadas ao longo do caminho
+                if (lastMarkerPosition) {
+                    lastIndex = RotaSaoPedro.indexOf(lastMarkerPosition);
+                    if (lastIndex === -1) {
+                        lastIndex = 0;
+                    }
+                }
+                var movemarkerVerdeInterval = setInterval(function() {
+                    if (lastIndex < RotaSaoPedro.length) {
+                        markerVerde.setLatLng(RotaSaoPedro[lastIndex]).update();
+                        lastMarkerPosition = RotaSaoPedro[lastIndex]; // Update lastMarkerPosition
+                        lastIndex++;
+                    } else {
+                        clearInterval(movemarkerVerdeInterval);
+                    }
+                }, 2000); // Ajuste o intervalo de tempo conforme necessário
+            }
+                //    var index = 0;
+                //    var movemarkerVerdeInterval = setInterval(function() {
+                //        if (index < RotaSaoPedro.length) {
+                //            markerVerde.setLatLng(RotaSaoPedro[index]).update();
+                //            index++;
+                //        } else {
+                //            clearInterval(movemarkerVerdeInterval);
+                //        }
+                //    }, 1000); // Ajuste o intervalo de tempo conforme necessário
+                //}
 
         // Função para criar a rota 3
         function createRoute3() {
             removeCurrentRoute();
-        selectedRoute = L.Routing.control({
+            selectedRoute = L.Routing.control({
         waypoints: 
         [
          L.latLng(-23.10794, -47.71799),
-         L.latLng(-23.11108, -47.71820,'Partida Rodoviaria'), // Terminal Rodoviário Professor Oswaldo Rodrigues de Moraes
+         L.latLng(-23.11108, -47.71820),
          L.latLng(-23.11313, -47.71444), // Rua Marcos Marcuz
          L.latLng(-23.11303,-47.71455), // Avenida Guiomar Fleury de Camargo
          L.latLng(-23.11798,-47.71103), // Rotatória
@@ -583,7 +945,6 @@
          L.latLng(-23.10541, -47.71135),
          L.latLng(-23.10561, -47.71739),
         ],
-
                 routeWhileDragging: false,
                 show: false, // Inicialmente, não exibe a rota 3
                 draggableWaypoints: false, // Impede que os pontos de parada sejam arrastados
@@ -596,10 +957,132 @@
                 routeDrag: false, // Desabilita a exibição detalhada de coordenadas (nomes das ruas) para a rota
                 geocoder: false // Desabilita a exibição detalhada de coordenadas (nomes das ruas) para os marcadores
              }).addTo(mymap);
-             startMarker.addTo(mymap).bindPopup('Partida');
-            endMarker.addTo(mymap).bindPopup('Parada');
+             //////////////
+             if (markerAzul) {
+                mymap.removeLayer(markerAzul);
+            }
+            if (markerVerde) {
+                mymap.removeLayer(markerVerde);
+            }
+            if (markerRoxo) {
+                mymap.removeLayer(markerRoxo)
+            }
+            if (markerLaranja) {
+                mymap.removeLayer(markerLaranja)
+            }
+            // Re-adiciona o ícone AzulIcon
+            if (!mymap.hasLayer(markerRed)) {
+                markerRed.addTo(mymap);
+            }
         }
-
+        function VenhaRotaEM() {
+                var RotaEmilioGardenal = [
+                [-23.09371, -47.70558],
+                [-23.09319, -47.70511],
+                [-23.09292, -47.70504],
+                [-23.09264, -47.70513],
+                [-23.09218, -47.70535],
+                [-23.09136, -47.70564],
+                [-23.09100, -47.70569],
+                [-23.09041, -47.70557],
+                [-23.09025, -47.70553],
+                [-23.09009, -47.70539],
+                [-23.09008, -47.70538],
+                [-23.08983, -47.70514],
+                [-23.08955, -47.70486],
+                [-23.08918, -47.70453],
+                [-23.08881, -47.70413],
+                [-23.08811, -47.70347],
+                [-23.08741, -47.70287],
+                [-23.08723, -47.70276],
+                [-23.08698, -47.70297],
+                [-23.08685, -47.70308],
+                [-23.08652, -47.70355],
+                [-23.08609, -47.70404],
+                [-23.08572, -47.70439],
+                [-23.08537, -47.70433],
+                [-23.08516, -47.70401],
+                [-23.08489, -47.70376],
+                [-23.08446, -47.70389],
+                [-23.08414, -47.70413],
+                [-23.08408, -47.70480],
+                [-23.08407, -47.70567],
+                [-23.08403, -47.70598],
+                [-23.08446, -47.70607],
+                [-23.08490, -47.70606],
+                [-23.08518, -47.70604],
+                [-23.08514, -47.70661],
+                [-23.08541, -47.70659],
+                [-23.08563, -47.70654],
+                [-23.08650, -47.70623],
+                [-23.08697, -47.70589],
+                [-23.08779, -47.70524],
+                [-23.08902, -47.70518],
+                [-23.09036, -47.70560],
+                [-23.09147, -47.70564],
+                [-23.09244, -47.70521],
+                [-23.09294, -47.70503],
+                [-23.09342, -47.70532],
+                [-23.09412, -47.70589],
+                [-23.09428, -47.70596],
+                [-23.09423, -47.70481],
+                [-23.09425, -47.70386],
+                [-23.09418, -47.70316],
+                [-23.09417, -47.70276],
+                [-23.09423, -47.70236],
+                [-23.09457, -47.70268],
+                [-23.09498, -47.70304],
+                [-23.09519, -47.70280],
+                [-23.09539, -47.70252],
+                [-23.09563, -47.70275],
+                [-23.09608, -47.70295],
+                [-23.09651, -47.70301],
+                [-23.09708, -47.70318],
+                [-23.09749, -47.70332],
+                [-23.09771, -47.70302],
+                [-23.09825, -47.70227],
+                [-23.09838, -47.70192],
+                [-23.09827, -47.70179],
+                [-23.09855, -47.70163],
+                [-23.09897, -47.70136],
+                [-23.09887, -47.70082],
+                [-23.09882, -47.70041],
+                [-23.09869, -47.69958],
+                [-23.09887, -47.69935],
+                [-23.09979, -47.69914],
+                [-23.10098, -47.69879],
+                [-23.10134, -47.69873],
+                [-23.10196, -47.69859],
+                [-23.10238, -47.69848],
+                [-23.10236, -47.69877],
+                [-23.10238, -47.69920],
+                ]; // Coordenadas ao longo do caminho
+                if (lastMarkerPosition) {
+                    lastIndex = RotaEmilioGardenal.indexOf(lastMarkerPosition);
+                    if (lastIndex === -1) {
+                        lastIndex = 0;
+                    }
+                }
+                var movemarkerRedInterval = setInterval(function() {
+                    if (lastIndex < RotaEmilioGardenal.length) {
+                        markerRed.setLatLng(RotaEmilioGardenal[lastIndex]).update();
+                        lastMarkerPosition = RotaEmilioGardenal[lastIndex]; // Update lastMarkerPosition
+                        lastIndex++;
+                    } else {
+                        clearInterval(movemarkerRedInterval);
+                    }
+                }, 2000); // Ajuste o intervalo de tempo conforme necessário
+            }
+                //    var index = 0;
+                //    var movemarkerRedInterval = setInterval(function() {
+                //        if (index < RotaEmilioGardenal.length) {
+                //            markerRed.setLatLng(RotaEmilioGardenal[index]).update();
+                //            index++;
+                //        } else {
+                //            clearInterval(movemarkerRedInterval);
+                //        }
+                //    }, 1000); // Ajuste o intervalo de tempo conforme necessário
+                //}
         function createRoute4() {
             removeCurrentRoute();
             selectedRoute = L.Routing.control({
@@ -653,10 +1136,39 @@
                 routeDrag: false, // Desabilita a exibição detalhada de coordenadas (nomes das ruas) para a rota
                 geocoder: false // Desabilita a exibição detalhada de coordenadas (nomes das ruas) para os marcadores
             }).addTo(mymap);
-            startMarker.addTo(mymap).bindPopup('Partida');
-            endMarker.addTo(mymap).bindPopup('Parada');
+            //////////////
+            if (markerAzul) {
+                mymap.removeLayer(markerAzul);
+            }
+            if (markerVerde) {
+                mymap.removeLayer(markerVerde);
+            }
+            if (markerRed) {
+                mymap.removeLayer(markerRed)
+            }
+            if (markerLaranja) {
+                mymap.removeLayer(markerLaranja)
+            }
+            // Re-adiciona o ícone AzulIcon
+            if (!mymap.hasLayer(markerRoxo)) {
+                markerRoxo.addTo(mymap);
+            }
         }
-
+        function VenhaRotaPV() {
+                var RotaPovoFeliz = [
+                [-23.09371, -47.70558],
+            
+                ]; // Coordenadas ao longo do caminho
+                    var index = 0;
+                    var movemarkerRoxoInterval = setInterval(function() {
+                        if (index < RotaPovoFeliz.length) {
+                            markerRed.setLatLng(RotaPovoFeliz[index]).update();
+                            index++;
+                        } else {
+                            clearInterval(movemarkerRoxoInterval);
+                        }
+                    }, 1000); // Ajuste o intervalo de tempo conforme necessário
+                }
         function createRoute5() {
             removeCurrentRoute();
             selectedRoute = L.Routing.control({
@@ -693,14 +1205,45 @@
                 addWaypoints: false, // Impede que novos pontos de parada sejam adicionados
                 routeLine: function(route, options) {
                     return L.Routing.line(route, {
-                styles: [{ color: '#F74AB4', weight: 5 }]
+                styles: [{ color: '#FF7B00', weight: 5 }]
             });
                 },
                 routeDrag: false, // Desabilita a exibição detalhada de coordenadas (nomes das ruas) para a rota
                 geocoder: false // Desabilita a exibição detalhada de coordenadas (nomes das ruas) para os marcadores
             }).addTo(mymap);
-            startMarker.addTo(mymap).bindPopup('Partida');
-            endMarker.addTo(mymap).bindPopup('Parada');
+             //////////////
+             if (markerAzul) {
+                mymap.removeLayer(markerAzul);
+            }
+            if (markerVerde) {
+                mymap.removeLayer(markerVerde);
+            }
+            if (markerRed) {
+                mymap.removeLayer(markerRed)
+            }
+            if ( markerRoxo) {
+                mymap.removeLayer(markerRoxo)
+            }
+            // Re-adiciona o ícone AzulIcon
+            if (!mymap.hasLayer(markerLaranja)) {
+                markerLaranja.addTo(mymap);
+            }
+
+            function VenhaRotaSR() {
+                var RotaSaoRoque = [
+                [-23.12016, -47.71232],
+            
+                ]; // Coordenadas ao longo do caminho
+                    var index = 0;
+                    var movemarkerLaranjaInterval = setInterval(function() {
+                        if (index < RotaSaoRoque.length) {
+                            markerRed.setLatLng(RotaSaoRoque[index]).update();
+                            index++;
+                        } else {
+                            clearInterval(movemarkerLaranjaInterval);
+                        }
+                    }, 1000); // Ajuste o intervalo de tempo conforme necessário
+                }
             // Função para fechar o sidebar
             function closeSidebar() {
                 var sidebar = document.getElementById('sidebar');
@@ -725,19 +1268,27 @@
         var sidebar = document.getElementById('sidebar');
         sidebar.style.left = '-250px';
 });
-
         document.getElementById('route-select').addEventListener('change', function() {
             var selectedValue = this.value;
             if (selectedValue === 'route1') {
                 createRoute1();
-            } else if (selectedValue === 'route2') {
+                VenhaRotaCoSm();
+            } 
+            else if (selectedValue === 'route2') {
                 createRoute2();
-            } else if (selectedValue === 'route3') {
+                VenhaRotaSP()
+            }
+             else if (selectedValue === 'route3') {
                 createRoute3();
-            } else if (selectedValue === 'route4') {
+                VenhaRotaEM();
+            } 
+            else if (selectedValue === 'route4') {
                 createRoute4();
-            } else if (selectedValue === 'route5') {
+                VenhaRotaPV();
+            } 
+            else if (selectedValue === 'route5') {
                 createRoute5();
+                VenhaRotaSR();
             }
             closeSidebar(); // Fecha o sidebar após a seleção de uma rota
         });
