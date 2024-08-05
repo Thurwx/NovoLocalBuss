@@ -28,12 +28,8 @@
         top: 9%; /* Posição superior menor para dispositivos móveis */
         right: 2%; /* Distância menor do lado direito para dispositivos móveis */
     }
-}
-
-
-  
-  
-  .toggle-checkbox:checked ~ .toggle-slot {
+} 
+ .toggle-checkbox:checked ~ .toggle-slot {
     background-color: #2e2e2e;
   }
   
@@ -52,16 +48,13 @@
     background-color: #485367;
     box-shadow: inset 0px 0px 0px 0.75em white;
     transform: translate(3.65em, 0.25em);
-  }
-
-  
+  }  
   .sun-icon {
     position: absolute;
     height: 6em;
     width: 6em;
     color: #6352ff;
   }
-  
   .sun-icon-wrapper {
     position: absolute;
     height: 6em;
@@ -100,7 +93,7 @@
     transform: translate(2em, 2em) rotate(-15deg);
   }
   
-  .dark-theme #top-background , .dark-theme #title , .dark-theme #sidebar , .dark-theme #sidebar h3 , .dark-theme #sidebar h2, .dark-theme #toggle-sidebar {
+  .dark-theme #top-background , .dark-theme .localbuss-link , .dark-theme #sidebar , .dark-theme #sidebar a , .dark-theme #sidebar h3 ,.dark-theme #sidebar h2, .dark-theme #toggle-sidebar {
     background-color: #2e2e2e; /* Cor de fundo preta */
     color: #ffffff; /* Cor do texto branca */ 
     transition: opacity 250ms, transform 800ms cubic-bezier(.26,2.5,.46,.71);
@@ -132,6 +125,9 @@
     background: -webkit-linear-gradient(45deg, #5f5f5f 0%,#424242 25%,#303030  50%,#2b2b2b  75%,#0f0f0f 100%);
     background: linear-gradient(45deg, #5f5f5f 0%,#424242 25%,#303030 50%,#2b2b2b  75%,#0f0f0f 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f09433', endColorstr='#bc1888',GradientType=1 );
+  }
+  .dark-theme .localbuss-link {
+    color: #ffffff; /* Cor do texto ao passar o mouse */
   }
   
   

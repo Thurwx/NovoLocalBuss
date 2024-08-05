@@ -15,7 +15,7 @@
 </head>
 <body>
     <div id="top-background">
-        <h1 id="title">LocalBuss</h1>        
+        <a href="Routes.html" class="localbuss-link">LocalBuss</a>
     </div>
     <div id="sidebar">
         <img id="sidebar-logo" src="./assents/L Azul.png" alt="Logo">
@@ -37,9 +37,10 @@
                 </button>
             </a>
             <h3>Orientadores:
-              <br>Daniel Guerreiro
-              <br>Eliton Camargo
-              <br>Anderson Ascenção
+                <br><a href="https://github.com/elitoncamargo" target="_blank">Eliton Camargo</a>
+                <br><a href="" target="_blank">Anderson Ascenção</a>
+                <br><a href="" target="_blank">Vitor Gabriel</a>
+                <br><a href="" target="_blank">Daniel Guerreiro</a>
             </h3>
       </div>
 
@@ -80,8 +81,8 @@
        var route5 = null; // variavel para armazenar a rota 5
        var startPoint = L.latLng(-23.11108, -47.71820); // Coordenada de partida
        var endPoint = L.latLng(-23.10186, -47.71200); // Coordenada da parada
-       var startMarker = L.marker(startPoint).addTo(mymap).bindPopup('Partida');
-       var endMarker = L.marker(endPoint).addTo(mymap).bindPopup('Parada');
+       var startMarker = L.marker(startPoint).addTo(mymap).bindPopup('Terminal Rodoviário Prefeito Oswaldo Rodrigues de Moraes');
+       var endMarker = L.marker(endPoint).addTo(mymap).bindPopup('Terminal Germínio Simon');
        var logoControl = L.control({ position: 'bottomright' });
        //Variável para armazenar a última posição do marcador
        var lastMarkerPosition = null;
